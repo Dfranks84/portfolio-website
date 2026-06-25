@@ -4,7 +4,8 @@
     <!--
     Author: Dennis Franks Jr
     Date: June 24, 2026
-    Purpose: Updated portfolio website with conditional logic, loops, dark mode, and contact form interactivity.
+    Purpose: Portfolio website with conditional logic, loops,
+    dark mode, and interactive contact form.
     -->
 
     <meta charset="UTF-8">
@@ -19,6 +20,7 @@
             text-align: center;
             background-color: white;
             color: black;
+            transition: 0.3s;
         }
 
         .dark-mode {
@@ -28,29 +30,30 @@
 
         nav {
             background-color: #333;
-            padding: 10px;
+            padding: 12px;
         }
 
         nav a {
             color: white;
             text-decoration: none;
-            margin: 15px;
+            margin: 18px;
+            font-size: 18px;
         }
 
         section {
-            padding: 20px;
+            padding: 25px;
         }
 
         .featured-box {
             border: 2px solid #333;
-            padding: 15px;
-            margin: 15px auto;
-            max-width: 500px;
-            background-color: #f2f2f2;
+            max-width: 550px;
+            margin: auto;
+            padding: 20px;
+            background: #f5f5f5;
         }
 
         .dark-mode .featured-box {
-            background-color: #222;
+            background: #222;
             border-color: white;
         }
 
@@ -60,29 +63,31 @@
         }
 
         form {
-            max-width: 400px;
+            max-width: 450px;
             margin: auto;
         }
 
-        input, textarea {
+        input,
+        textarea {
             width: 100%;
+            padding: 10px;
             margin-bottom: 10px;
-            padding: 8px;
         }
 
         button {
-            padding: 8px 12px;
+            padding: 10px 18px;
         }
 
         .toggle-area {
-            padding: 15px;
+            padding-top: 15px;
         }
     </style>
 </head>
+
 <body>
 
 <div class="toggle-area">
-    <label for="darkModeToggle">
+    <label>
         <input type="checkbox" id="darkModeToggle">
         Dark Mode
     </label>
@@ -98,53 +103,127 @@
 </nav>
 
 <section id="about">
-    <h2>About</h2>
-    <p>Hello, my name is Dennis Franks Jr.</p>
-    <p>I am studying Information Technology and learning web development.</p>
-    <p>I enjoy working with computers, programming, and automotive diagnostics.</p>
 
-    <h3>Skills and Technologies</h3>
+    <h2>About</h2>
+
+    <p>Hello, my name is Dennis Franks Jr.</p>
+
+    <p>
+        I am studying Information Technology and learning web development.
+    </p>
+
+    <p>
+        I enjoy working with computers, programming, and automotive diagnostics.
+    </p>
+
+    <h2>Skills and Technologies</h2>
+
     <ul id="skillsList"></ul>
+
 </section>
 
 <section id="featured">
+
     <h2>Featured Content</h2>
 
     <div id="universityResources" class="featured-box">
+
         <h3>University Resources</h3>
-        <p><a href="https://www.ecpi.edu/programs/information-technology-bachelor-degree" target="_blank">ECPI Information Technology Program</a></p>
-        <p><a href="https://www.ecpi.edu/" target="_blank">ECPI University Home Page</a></p>
+
+        <p>
+            <a href="https://www.ecpi.edu/programs/information-technology-bachelor-degree" target="_blank">
+                ECPI Information Technology Program
+            </a>
+        </p>
+
+        <p>
+            <a href="https://www.ecpi.edu/" target="_blank">
+                ECPI University
+            </a>
+        </p>
+
     </div>
 
     <div id="personalProjects" class="featured-box">
+
         <h3>Personal Projects</h3>
-        <p><a href="https://github.com/Dfranks84/portfolio-website" target="_blank">Portfolio Website</a></p>
-        <p><a href="https://github.com/Dfranks84" target="_blank">My GitHub Profile</a></p>
+
+        <p>
+            <a href="https://github.com/Dfranks84/portfolio-website" target="_blank">
+                Portfolio Website
+            </a>
+        </p>
+
+        <p>
+            <a href="https://github.com/Dfranks84" target="_blank">
+                My GitHub Profile
+            </a>
+        </p>
+
     </div>
+
 </section>
 
 <section id="projects">
+
     <h2>Projects</h2>
 
-    <a href="https://github.com/Dfranks84/portfolio-website" target="_blank">Project 1</a><br><br>
-    <a href="https://github.com/Dfranks84" target="_blank">Project 2</a><br><br>
-    <a href="https://github.com/Dfranks84" target="_blank">Project 3</a>
+    <p>
+        <a href="https://github.com/Dfranks84/portfolio-website" target="_blank">
+            Portfolio Website
+        </a>
+    </p>
+
+    <p>
+        <a href="https://github.com/Dfranks84/dennis-final-calculator" target="_blank">
+            Final Calculator
+        </a>
+    </p>
+
+    <p>
+        <a href="https://github.com/Dfranks84/classroomRoster" target="_blank">
+            Classroom Roster
+        </a>
+    </p>
+
 </section>
 
 <section id="contact">
+
     <h2>Contact</h2>
 
     <form id="contactForm">
-        <input type="text" id="senderName" placeholder="Name">
-        <input type="email" id="senderEmail" placeholder="Email">
-        <input type="text" id="subject" placeholder="Subject">
-        <textarea id="message" placeholder="Message"></textarea>
-        <button type="submit" id="submitButton">Submit</button>
+
+        <input
+            type="text"
+            id="senderName"
+            placeholder="Name">
+
+        <input
+            type="email"
+            id="senderEmail"
+            placeholder="Email">
+
+        <input
+            type="text"
+            id="subject"
+            placeholder="Subject">
+
+        <textarea
+            id="message"
+            placeholder="Message"></textarea>
+
+        <button type="submit">
+            Submit
+        </button>
+
     </form>
+
 </section>
 
 <script>
-    // Ask user for their name and display a personalized welcome message
+
+    // Prompt user for their name
     let userName = prompt("Please enter your name:");
 
     if (userName === "" || userName === null) {
@@ -154,51 +233,85 @@
     document.getElementById("welcomeMessage").innerHTML =
         "Welcome, " + userName + "!";
 
-    // Display skills in the About section using an array and forEach loop
-    const skills = ["HTML", "CSS", "JavaScript", "Git", "GitHub"];
+    // Array of skills
+    const skills = [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Git",
+        "GitHub"
+    ];
 
     const skillsList = document.getElementById("skillsList");
 
-    skills.forEach(function(skill) {
+    // Display skills using forEach()
+    skills.forEach(function (skill) {
+
         const listItem = document.createElement("li");
+
         listItem.textContent = skill;
+
         skillsList.appendChild(listItem);
+
     });
 
-    // Conditional logic to decide which Featured Content divs are visible
-    const projectLinks = document.querySelectorAll("#projects a");
-    const universityResources = document.getElementById("universityResources");
-    const personalProjects = document.getElementById("personalProjects");
+    // Conditional Logic
+    const projectLinks =
+        document.querySelectorAll("#projects a");
+
+    const universityResources =
+        document.getElementById("universityResources");
+
+    const personalProjects =
+        document.getElementById("personalProjects");
 
     if (projectLinks.length < 3) {
+
         universityResources.style.display = "block";
         personalProjects.style.display = "block";
+
     } else {
+
         universityResources.style.display = "none";
         personalProjects.style.display = "block";
+
     }
 
-    // Dark mode toggle using addEventListener and classList.toggle()
-    const darkModeToggle = document.getElementById("darkModeToggle");
+    // Dark Mode
+    const darkModeToggle =
+        document.getElementById("darkModeToggle");
 
-    darkModeToggle.addEventListener("change", function() {
+    darkModeToggle.addEventListener("change", function () {
+
         document.body.classList.toggle("dark-mode");
+
     });
 
-    // Contact form submit interaction
-    const contactForm = document.getElementById("contactForm");
+    // Contact Form
+    const contactForm =
+        document.getElementById("contactForm");
 
-    contactForm.addEventListener("submit", function(event) {
+    contactForm.addEventListener("submit", function (event) {
+
         event.preventDefault();
 
-        let senderName = document.getElementById("senderName").value;
+        let senderName =
+            document.getElementById("senderName").value;
 
         if (senderName === "") {
+
             senderName = userName;
+
         }
 
-        alert("Thank you, " + senderName + ", your message has been sent!");
+        alert(
+            "Thank you, " +
+            senderName +
+            ", your message has been sent!"
+        );
+
     });
+
 </script>
 
 </body>
