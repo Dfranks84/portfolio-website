@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!--
     Author: Dennis Franks Jr
-    Date: June 24, 2026
-    Purpose: Portfolio website with conditional logic, loops,
-    dark mode, and interactive contact form.
+    Date: July 11, 2026
+    Purpose: Create an interactive portfolio website that uses JavaScript
+    to dynamically add elements, modify existing page content, support
+    dark mode, and display a timed confirmation message for the contact form.
     -->
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
     <title>Portfolio Website</title>
 
     <style>
@@ -25,6 +31,18 @@
 
         .dark-mode {
             background-color: #121212;
+            color: white;
+        }
+
+        #notificationArea {
+            padding: 12px;
+            background-color: #dff0d8;
+            border-bottom: 2px solid #4caf50;
+            font-weight: bold;
+        }
+
+        .dark-mode #notificationArea {
+            background-color: #214321;
             color: white;
         }
 
@@ -47,7 +65,7 @@
         .featured-box {
             border: 2px solid #333;
             max-width: 550px;
-            margin: auto;
+            margin: 10px auto;
             padding: 20px;
             background: #f5f5f5;
         }
@@ -62,6 +80,22 @@
             text-align: left;
         }
 
+        #projects {
+            max-width: 750px;
+            margin: auto;
+        }
+
+        .modified-projects {
+            border: 3px solid #333;
+            border-radius: 10px;
+            background-color: #f4f4f4;
+        }
+
+        .dark-mode .modified-projects {
+            border-color: white;
+            background-color: #222;
+        }
+
         form {
             max-width: 450px;
             margin: auto;
@@ -72,6 +106,7 @@
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
+            box-sizing: border-box;
         }
 
         button {
@@ -81,30 +116,60 @@
         .toggle-area {
             padding-top: 15px;
         }
+
+        #formStatus {
+            min-height: 25px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .sending-message {
+            color: #b36b00;
+        }
+
+        .success-message {
+            color: green;
+        }
+
+        .dark-mode .success-message {
+            color: lightgreen;
+        }
     </style>
 </head>
 
 <body>
 
 <div class="toggle-area">
+
     <label>
-        <input type="checkbox" id="darkModeToggle">
+
+        <input
+            type="checkbox"
+            id="darkModeToggle">
+
         Dark Mode
+
     </label>
+
 </div>
 
 <h1 id="welcomeMessage">Welcome!</h1>
 
 <nav>
+
     <a href="#about">About</a>
+
     <a href="#featured">Featured Content</a>
+
     <a href="#projects">Projects</a>
+
     <a href="#contact">Contact</a>
+
 </nav>
 
 <section id="about">
 
-    <h2>About</h2>
+    <h2 id="aboutHeading">About</h2>
 
     <p>Hello, my name is Dennis Franks Jr.</p>
 
@@ -126,38 +191,66 @@
 
     <h2>Featured Content</h2>
 
-    <div id="universityResources" class="featured-box">
+    <div
+        id="universityResources"
+        class="featured-box">
 
         <h3>University Resources</h3>
 
         <p>
-            <a href="https://www.ecpi.edu/programs/information-technology-bachelor-degree" target="_blank">
+
+            <a
+                href="https://www.ecpi.edu/programs/information-technology-bachelor-degree"
+                target="_blank">
+
                 ECPI Information Technology Program
+
             </a>
+
         </p>
 
         <p>
-            <a href="https://www.ecpi.edu/" target="_blank">
+
+            <a
+                href="https://www.ecpi.edu/"
+                target="_blank">
+
                 ECPI University
+
             </a>
+
         </p>
 
     </div>
 
-    <div id="personalProjects" class="featured-box">
+    <div
+        id="personalProjects"
+        class="featured-box">
 
         <h3>Personal Projects</h3>
 
         <p>
-            <a href="https://github.com/Dfranks84/portfolio-website" target="_blank">
+
+            <a
+                href="https://github.com/Dfranks84/portfolio-website"
+                target="_blank">
+
                 Portfolio Website
+
             </a>
+
         </p>
 
         <p>
-            <a href="https://github.com/Dfranks84" target="_blank">
+
+            <a
+                href="https://github.com/Dfranks84"
+                target="_blank">
+
                 My GitHub Profile
+
             </a>
+
         </p>
 
     </div>
@@ -166,24 +259,42 @@
 
 <section id="projects">
 
-    <h2>Projects</h2>
+    <h2 id="projectsHeading">Projects</h2>
 
     <p>
-        <a href="https://github.com/Dfranks84/portfolio-website" target="_blank">
+
+        <a
+            href="https://github.com/Dfranks84/portfolio-website"
+            target="_blank">
+
             Portfolio Website
+
         </a>
+
     </p>
 
     <p>
-        <a href="https://github.com/Dfranks84/dennis-final-calculator" target="_blank">
+
+        <a
+            href="https://github.com/Dfranks84/dennis-final-calculator"
+            target="_blank">
+
             Final Calculator
+
         </a>
+
     </p>
 
     <p>
-        <a href="https://github.com/Dfranks84/classroomRoster" target="_blank">
+
+        <a
+            href="https://github.com/Dfranks84/classroomRoster"
+            target="_blank">
+
             Classroom Roster
+
         </a>
+
     </p>
 
 </section>
@@ -219,11 +330,13 @@
 
     </form>
 
+    <p id="formStatus"></p>
+
 </section>
 
 <script>
 
-    // Prompt user for their name
+    // Prompt the visitor for a name and display a personalized greeting.
     let userName = prompt("Please enter your name:");
 
     if (userName === "" || userName === null) {
@@ -233,7 +346,8 @@
     document.getElementById("welcomeMessage").innerHTML =
         "Welcome, " + userName + "!";
 
-    // Array of skills
+
+    // Store portfolio skills in an array.
     const skills = [
         "HTML",
         "CSS",
@@ -242,12 +356,15 @@
         "GitHub"
     ];
 
-    const skillsList = document.getElementById("skillsList");
+    const skillsList =
+        document.getElementById("skillsList");
 
-    // Display skills using forEach()
+
+    // Dynamically create and append each skill as a list item.
     skills.forEach(function (skill) {
 
-        const listItem = document.createElement("li");
+        const listItem =
+            document.createElement("li");
 
         listItem.textContent = skill;
 
@@ -255,7 +372,63 @@
 
     });
 
-    // Conditional Logic
+
+    // Dynamically create a new paragraph for the Projects section.
+    const projectsSection =
+        document.getElementById("projects");
+
+    const projectIntroduction =
+        document.createElement("p");
+
+    projectIntroduction.textContent =
+        "These projects demonstrate my growing experience with programming, web development, and problem-solving.";
+
+    projectsSection.appendChild(projectIntroduction);
+
+
+    // Dynamically create a notification after a two-second delay.
+    setTimeout(function () {
+
+        const notification =
+            document.createElement("div");
+
+        notification.id = "notificationArea";
+
+        notification.textContent =
+            "Welcome to my updated JavaScript portfolio!";
+
+        document.body.insertBefore(
+            notification,
+            document.body.firstChild
+        );
+
+    }, 2000);
+
+
+    // Select and modify an existing heading using querySelector().
+    const aboutHeading =
+        document.querySelector("#aboutHeading");
+
+    aboutHeading.textContent =
+        "About Me";
+
+    aboutHeading.style.color =
+        "#0066cc";
+
+
+    // Select and modify the existing Projects section.
+    const projectsHeading =
+        document.getElementById("projectsHeading");
+
+    projectsHeading.textContent =
+        "My Programming Projects";
+
+    projectsSection.classList.add(
+        "modified-projects"
+    );
+
+
+    // Determine which featured resource boxes should be visible.
     const projectLinks =
         document.querySelectorAll("#projects a");
 
@@ -267,52 +440,88 @@
 
     if (projectLinks.length < 3) {
 
-        universityResources.style.display = "block";
-        personalProjects.style.display = "block";
+        universityResources.style.display =
+            "block";
+
+        personalProjects.style.display =
+            "block";
 
     } else {
 
-        universityResources.style.display = "none";
-        personalProjects.style.display = "block";
+        universityResources.style.display =
+            "none";
+
+        personalProjects.style.display =
+            "block";
 
     }
 
-    // Dark Mode
+
+    // Turn dark mode on or off when the checkbox changes.
     const darkModeToggle =
         document.getElementById("darkModeToggle");
 
-    darkModeToggle.addEventListener("change", function () {
+    darkModeToggle.addEventListener(
+        "change",
+        function () {
 
-        document.body.classList.toggle("dark-mode");
+            document.body.classList.toggle(
+                "dark-mode"
+            );
 
-    });
+        }
+    );
 
-    // Contact Form
+
+    // Handle the contact form submission.
     const contactForm =
         document.getElementById("contactForm");
 
-    contactForm.addEventListener("submit", function (event) {
+    const formStatus =
+        document.getElementById("formStatus");
 
-        event.preventDefault();
+    contactForm.addEventListener(
+        "submit",
+        function (event) {
 
-        let senderName =
-            document.getElementById("senderName").value;
+            // Prevent the browser from submitting and refreshing the page.
+            event.preventDefault();
 
-        if (senderName === "") {
+            let senderName =
+                document.getElementById("senderName").value;
 
-            senderName = userName;
+            if (senderName === "") {
+                senderName = userName;
+            }
+
+            // Display a temporary sending message.
+            formStatus.textContent =
+                "Sending message...";
+
+            formStatus.className =
+                "sending-message";
+
+            // Replace the sending message after three seconds.
+            setTimeout(function () {
+
+                formStatus.textContent =
+                    "Message sent successfully! Thank you, " +
+                    senderName +
+                    ".";
+
+                formStatus.className =
+                    "success-message";
+
+                contactForm.reset();
+
+            }, 3000);
 
         }
-
-        alert(
-            "Thank you, " +
-            senderName +
-            ", your message has been sent!"
-        );
-
-    });
+    );
 
 </script>
 
 </body>
+
 </html>
+
