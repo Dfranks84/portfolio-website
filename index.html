@@ -4,10 +4,11 @@
 <head>
     <!--
     Author: Dennis Franks Jr
-    Date: July 11, 2026
+    Date: July 18, 2026
     Purpose: Create an interactive portfolio website that uses JavaScript
-    to dynamically add elements, modify existing page content, support
-    dark mode, and display a timed confirmation message for the contact form.
+    to dynamically add elements, display a custom welcome modal, provide
+    a tooltip for the Submit button, remember dark mode with localStorage,
+    and display a timed confirmation message for the contact form.
     -->
 
     <meta charset="UTF-8">
@@ -134,10 +135,95 @@
         .dark-mode .success-message {
             color: lightgreen;
         }
+
+        /* Overlay behind the custom welcome modal. */
+        .modal-overlay {
+            display: flex;
+            position: fixed;
+            inset: 0;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.55);
+            z-index: 1000;
+        }
+
+        /* Main content box for the welcome modal. */
+        .modal-content {
+            width: min(90%, 420px);
+            padding: 25px;
+            border-radius: 10px;
+            background-color: white;
+            color: black;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+
+        .dark-mode .modal-content {
+            background-color: #222;
+            color: white;
+        }
+
+        #closeModalButton {
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        /* Container used to position the Submit button tooltip. */
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Tooltip text hidden until the user hovers over the Submit button. */
+        .tooltip-text {
+            visibility: hidden;
+            position: absolute;
+            left: 50%;
+            bottom: 125%;
+            width: 190px;
+            margin-left: -95px;
+            padding: 8px;
+            border-radius: 6px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 10;
+        }
+
+        .tooltip-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
 </head>
 
 <body>
+
+
+<!-- Custom welcome modal displayed when the page loads. -->
+<div
+    id="welcomeModal"
+    class="modal-overlay">
+
+    <div class="modal-content">
+
+        <h2>Welcome to My Portfolio</h2>
+
+        <p>This page is a work in progress.</p>
+
+        <button
+            type="button"
+            id="closeModalButton">
+
+            Close
+
+        </button>
+
+    </div>
+
+</div>
+
 
 <div class="toggle-area">
 
@@ -324,9 +410,17 @@
             id="message"
             placeholder="Message"></textarea>
 
-        <button type="submit">
-            Submit
-        </button>
+        <div class="tooltip-container">
+
+            <button type="submit">
+                Submit
+            </button>
+
+            <span class="tooltip-text">
+                Click to send your message!
+            </span>
+
+        </div>
 
     </form>
 
@@ -336,15 +430,22 @@
 
 <script>
 
-    // Prompt the visitor for a name and display a personalized greeting.
-    let userName = prompt("Please enter your name:");
+    // Display the custom welcome modal when the page loads.
+    const welcomeModal =
+        document.getElementById("welcomeModal");
 
-    if (userName === "" || userName === null) {
-        userName = "Guest";
-    }
+    const closeModalButton =
+        document.getElementById("closeModalButton");
 
-    document.getElementById("welcomeMessage").innerHTML =
-        "Welcome, " + userName + "!";
+    closeModalButton.addEventListener(
+        "click",
+        function () {
+
+            welcomeModal.style.display =
+                "none";
+
+        }
+    );
 
 
     // Store portfolio skills in an array.
@@ -457,17 +558,53 @@
     }
 
 
-    // Turn dark mode on or off when the checkbox changes.
+    // Read the saved dark mode preference when the page loads.
     const darkModeToggle =
         document.getElementById("darkModeToggle");
 
+    const savedDarkMode =
+        localStorage.getItem("darkMode");
+
+    if (savedDarkMode === "enabled") {
+
+        document.body.classList.add(
+            "dark-mode"
+        );
+
+        darkModeToggle.checked =
+            true;
+
+    }
+
+
+    // Save the user's dark mode preference whenever the toggle changes.
     darkModeToggle.addEventListener(
         "change",
         function () {
 
-            document.body.classList.toggle(
-                "dark-mode"
-            );
+            if (darkModeToggle.checked) {
+
+                document.body.classList.add(
+                    "dark-mode"
+                );
+
+                localStorage.setItem(
+                    "darkMode",
+                    "enabled"
+                );
+
+            } else {
+
+                document.body.classList.remove(
+                    "dark-mode"
+                );
+
+                localStorage.setItem(
+                    "darkMode",
+                    "disabled"
+                );
+
+            }
 
         }
     );
@@ -491,7 +628,7 @@
                 document.getElementById("senderName").value;
 
             if (senderName === "") {
-                senderName = userName;
+                senderName = "Guest";
             }
 
             // Display a temporary sending message.
@@ -524,4 +661,5 @@
 </body>
 
 </html>
+
 
