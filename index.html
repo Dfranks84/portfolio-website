@@ -2,13 +2,13 @@
 <html lang="en">
 
 <head>
+
     <!--
-    Author: Dennis Franks Jr
-    Date: July 18, 2026
+    Author: Dennis Franks Jr.
+    Date: July 23, 2026
     Purpose: Create an interactive portfolio website that uses JavaScript
-    to dynamically add elements, display a custom welcome modal, provide
-    a tooltip for the Submit button, remember dark mode with localStorage,
-    and display a timed confirmation message for the contact form.
+    objects, arrays, JSON, sessionStorage, and DOM manipulation to
+    dynamically display programming projects.
     -->
 
     <meta charset="UTF-8">
@@ -17,11 +17,12 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-    <title>Portfolio Website</title>
+    <title>Dennis Franks Jr. Portfolio</title>
 
     <style>
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             margin: 0;
             padding: 0;
             text-align: center;
@@ -59,6 +60,10 @@
             font-size: 18px;
         }
 
+        nav a:hover {
+            text-decoration: underline;
+        }
+
         section {
             padding: 25px;
         }
@@ -68,11 +73,11 @@
             max-width: 550px;
             margin: 10px auto;
             padding: 20px;
-            background: #f5f5f5;
+            background-color: #f5f5f5;
         }
 
         .dark-mode .featured-box {
-            background: #222;
+            background-color: #222;
             border-color: white;
         }
 
@@ -82,7 +87,7 @@
         }
 
         #projects {
-            max-width: 750px;
+            max-width: 1000px;
             margin: auto;
         }
 
@@ -95,6 +100,58 @@
         .dark-mode .modified-projects {
             border-color: white;
             background-color: #222;
+        }
+
+        #projectContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .project-card {
+            width: 270px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 15px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .dark-mode .project-card {
+            background-color: #333;
+            border-color: white;
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .project-card h3 {
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .project-card p {
+            line-height: 1.5;
+        }
+
+        .project-card a {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 9px 14px;
+            border-radius: 5px;
+            background-color: #0066cc;
+            color: white;
+            text-decoration: none;
+        }
+
+        .project-card a:hover {
+            background-color: #004999;
         }
 
         form {
@@ -112,6 +169,7 @@
 
         button {
             padding: 10px 18px;
+            cursor: pointer;
         }
 
         .toggle-area {
@@ -136,7 +194,6 @@
             color: lightgreen;
         }
 
-        /* Overlay behind the custom welcome modal. */
         .modal-overlay {
             display: flex;
             position: fixed;
@@ -147,7 +204,6 @@
             z-index: 1000;
         }
 
-        /* Main content box for the welcome modal. */
         .modal-content {
             width: min(90%, 420px);
             padding: 25px;
@@ -164,16 +220,13 @@
 
         #closeModalButton {
             margin-top: 10px;
-            cursor: pointer;
         }
 
-        /* Container used to position the Submit button tooltip. */
         .tooltip-container {
             position: relative;
             display: inline-block;
         }
 
-        /* Tooltip text hidden until the user hovers over the Submit button. */
         .tooltip-text {
             visibility: hidden;
             position: absolute;
@@ -195,468 +248,732 @@
             visibility: visible;
             opacity: 1;
         }
+
+        footer {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+        }
+
+        @media screen and (max-width: 700px) {
+
+            nav a {
+                display: block;
+                margin: 10px;
+            }
+
+            #projectContainer {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .project-card {
+                width: 85%;
+            }
+        }
+
     </style>
+
 </head>
 
 <body>
 
 
-<!-- Custom welcome modal displayed when the page loads. -->
-<div
-    id="welcomeModal"
-    class="modal-overlay">
-
-    <div class="modal-content">
-
-        <h2>Welcome to My Portfolio</h2>
-
-        <p>This page is a work in progress.</p>
-
-        <button
-            type="button"
-            id="closeModalButton">
-
-            Close
-
-        </button>
-
-    </div>
-
-</div>
-
-
-<div class="toggle-area">
-
-    <label>
-
-        <input
-            type="checkbox"
-            id="darkModeToggle">
-
-        Dark Mode
-
-    </label>
-
-</div>
-
-<h1 id="welcomeMessage">Welcome!</h1>
-
-<nav>
-
-    <a href="#about">About</a>
-
-    <a href="#featured">Featured Content</a>
-
-    <a href="#projects">Projects</a>
-
-    <a href="#contact">Contact</a>
-
-</nav>
-
-<section id="about">
-
-    <h2 id="aboutHeading">About</h2>
-
-    <p>Hello, my name is Dennis Franks Jr.</p>
-
-    <p>
-        I am studying Information Technology and learning web development.
-    </p>
-
-    <p>
-        I enjoy working with computers, programming, and automotive diagnostics.
-    </p>
-
-    <h2>Skills and Technologies</h2>
-
-    <ul id="skillsList"></ul>
-
-</section>
-
-<section id="featured">
-
-    <h2>Featured Content</h2>
+    <!-- Welcome modal displayed when the page loads. -->
 
     <div
-        id="universityResources"
-        class="featured-box">
+        id="welcomeModal"
+        class="modal-overlay">
 
-        <h3>University Resources</h3>
+        <div class="modal-content">
 
-        <p>
+            <h2>Welcome to My Portfolio</h2>
 
-            <a
-                href="https://www.ecpi.edu/programs/information-technology-bachelor-degree"
-                target="_blank">
+            <p>
+                This portfolio displays my programming and
+                web-development projects.
+            </p>
 
-                ECPI Information Technology Program
+            <button
+                type="button"
+                id="closeModalButton">
 
-            </a>
+                Close
 
-        </p>
-
-        <p>
-
-            <a
-                href="https://www.ecpi.edu/"
-                target="_blank">
-
-                ECPI University
-
-            </a>
-
-        </p>
-
-    </div>
-
-    <div
-        id="personalProjects"
-        class="featured-box">
-
-        <h3>Personal Projects</h3>
-
-        <p>
-
-            <a
-                href="https://github.com/Dfranks84/portfolio-website"
-                target="_blank">
-
-                Portfolio Website
-
-            </a>
-
-        </p>
-
-        <p>
-
-            <a
-                href="https://github.com/Dfranks84"
-                target="_blank">
-
-                My GitHub Profile
-
-            </a>
-
-        </p>
-
-    </div>
-
-</section>
-
-<section id="projects">
-
-    <h2 id="projectsHeading">Projects</h2>
-
-    <p>
-
-        <a
-            href="https://github.com/Dfranks84/portfolio-website"
-            target="_blank">
-
-            Portfolio Website
-
-        </a>
-
-    </p>
-
-    <p>
-
-        <a
-            href="https://github.com/Dfranks84/dennis-final-calculator"
-            target="_blank">
-
-            Final Calculator
-
-        </a>
-
-    </p>
-
-    <p>
-
-        <a
-            href="https://github.com/Dfranks84/classroomRoster"
-            target="_blank">
-
-            Classroom Roster
-
-        </a>
-
-    </p>
-
-</section>
-
-<section id="contact">
-
-    <h2>Contact</h2>
-
-    <form id="contactForm">
-
-        <input
-            type="text"
-            id="senderName"
-            placeholder="Name">
-
-        <input
-            type="email"
-            id="senderEmail"
-            placeholder="Email">
-
-        <input
-            type="text"
-            id="subject"
-            placeholder="Subject">
-
-        <textarea
-            id="message"
-            placeholder="Message"></textarea>
-
-        <div class="tooltip-container">
-
-            <button type="submit">
-                Submit
             </button>
-
-            <span class="tooltip-text">
-                Click to send your message!
-            </span>
 
         </div>
 
-    </form>
+    </div>
 
-    <p id="formStatus"></p>
 
-</section>
+    <div class="toggle-area">
 
-<script>
+        <label>
 
-    // Display the custom welcome modal when the page loads.
-    const welcomeModal =
-        document.getElementById("welcomeModal");
+            <input
+                type="checkbox"
+                id="darkModeToggle">
 
-    const closeModalButton =
-        document.getElementById("closeModalButton");
+            Dark Mode
 
-    closeModalButton.addEventListener(
-        "click",
-        function () {
+        </label>
 
-            welcomeModal.style.display =
+    </div>
+
+
+    <h1 id="welcomeMessage">
+        Welcome to Dennis Franks Jr.'s Portfolio
+    </h1>
+
+
+    <nav>
+
+        <a href="#about">About</a>
+
+        <a href="#featured">Featured Content</a>
+
+        <a href="#projects">Projects</a>
+
+        <a href="#contact">Contact</a>
+
+    </nav>
+
+
+    <section id="about">
+
+        <h2 id="aboutHeading">About</h2>
+
+        <p>
+            Hello, my name is Dennis Franks Jr.
+        </p>
+
+        <p>
+            I am studying Information Technology and learning
+            software and web development.
+        </p>
+
+        <p>
+            I enjoy working with computers, programming,
+            troubleshooting, and automotive diagnostics.
+        </p>
+
+        <h2>Skills and Technologies</h2>
+
+        <ul id="skillsList"></ul>
+
+    </section>
+
+
+    <section id="featured">
+
+        <h2>Featured Content</h2>
+
+        <div
+            id="universityResources"
+            class="featured-box">
+
+            <h3>University Resources</h3>
+
+            <p>
+
+                <a
+                    href="https://www.ecpi.edu/programs/information-technology-bachelor-degree"
+                    target="_blank"
+                    rel="noopener noreferrer">
+
+                    ECPI Information Technology Program
+
+                </a>
+
+            </p>
+
+            <p>
+
+                <a
+                    href="https://www.ecpi.edu/"
+                    target="_blank"
+                    rel="noopener noreferrer">
+
+                    ECPI University
+
+                </a>
+
+            </p>
+
+        </div>
+
+
+        <div
+            id="personalProjects"
+            class="featured-box">
+
+            <h3>Personal Resources</h3>
+
+            <p>
+
+                <a
+                    href="https://github.com/Dfranks84/portfolio-website"
+                    target="_blank"
+                    rel="noopener noreferrer">
+
+                    Portfolio Repository
+
+                </a>
+
+            </p>
+
+            <p>
+
+                <a
+                    href="https://github.com/Dfranks84"
+                    target="_blank"
+                    rel="noopener noreferrer">
+
+                    My GitHub Profile
+
+                </a>
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section id="projects">
+
+        <h2 id="projectsHeading">
+            Projects
+        </h2>
+
+        <p>
+            The projects below are generated dynamically from
+            JavaScript objects stored in sessionStorage.
+        </p>
+
+        <!-- JavaScript will create and insert the project cards here. -->
+
+        <div id="projectContainer"></div>
+
+    </section>
+
+
+    <section id="contact">
+
+        <h2>Contact</h2>
+
+        <form id="contactForm">
+
+            <input
+                type="text"
+                id="senderName"
+                placeholder="Name">
+
+            <input
+                type="email"
+                id="senderEmail"
+                placeholder="Email">
+
+            <input
+                type="text"
+                id="subject"
+                placeholder="Subject">
+
+            <textarea
+                id="message"
+                placeholder="Message"></textarea>
+
+            <div class="tooltip-container">
+
+                <button type="submit">
+                    Submit
+                </button>
+
+                <span class="tooltip-text">
+                    Click to send your message!
+                </span>
+
+            </div>
+
+        </form>
+
+        <p id="formStatus"></p>
+
+    </section>
+
+
+    <footer>
+
+        <p>
+            Dennis Franks Jr. — Portfolio Website
+        </p>
+
+    </footer>
+
+
+    <script>
+
+        "use strict";
+
+
+        // Select the welcome modal and its Close button.
+
+        const welcomeModal =
+            document.getElementById("welcomeModal");
+
+        const closeModalButton =
+            document.getElementById("closeModalButton");
+
+
+        // Hide the modal when the user clicks Close.
+
+        closeModalButton.addEventListener(
+            "click",
+            function () {
+
+                welcomeModal.style.display =
+                    "none";
+
+            }
+        );
+
+
+        // Store portfolio skills in an array.
+
+        const skills = [
+            "HTML",
+            "CSS",
+            "JavaScript",
+            "JSON",
+            "DOM Manipulation",
+            "Session Storage",
+            "Git",
+            "GitHub"
+        ];
+
+
+        const skillsList =
+            document.getElementById("skillsList");
+
+
+        // Dynamically create and append each skill.
+
+        skills.forEach(function (skill) {
+
+            const listItem =
+                document.createElement("li");
+
+            listItem.textContent =
+                skill;
+
+            skillsList.appendChild(
+                listItem
+            );
+
+        });
+
+
+        /*
+        Create three custom JavaScript objects.
+
+        Each object contains a title, summary, image,
+        and repository URL.
+        */
+
+        const portfolioProject = {
+
+            title: "Portfolio Website",
+
+            summary:
+                "An interactive portfolio website featuring dynamic content, dark mode, a welcome modal, tooltips, localStorage, sessionStorage, and a contact form.",
+
+            image:
+                "https://placehold.co/600x350?text=Portfolio+Website",
+
+            repository:
+                "https://github.com/Dfranks84/portfolio-website"
+
+        };
+
+
+        const calculatorProject = {
+
+            title: "Final Calculator",
+
+            summary:
+                "A calculator project developed to demonstrate JavaScript calculations, event handling, input processing, and programming logic.",
+
+            image:
+                "https://placehold.co/600x350?text=Final+Calculator",
+
+            repository:
+                "https://github.com/Dfranks84/dennis-final-calculator"
+
+        };
+
+
+        const rosterProject = {
+
+            title: "Classroom Roster",
+
+            summary:
+                "A classroom roster application that demonstrates structured data, programming logic, organization, and object-oriented development skills.",
+
+            image:
+                "https://placehold.co/600x350?text=Classroom+Roster",
+
+            repository:
+                "https://github.com/Dfranks84/classroomRoster"
+
+        };
+
+
+        // Place the three project objects into an array.
+
+        const portfolioProjects = [
+            portfolioProject,
+            calculatorProject,
+            rosterProject
+        ];
+
+
+        /*
+        Convert the project array into a JSON string
+        and save it in sessionStorage.
+        */
+
+        sessionStorage.setItem(
+            "portfolioProjects",
+            JSON.stringify(portfolioProjects)
+        );
+
+
+        /*
+        Retrieve the JSON string from sessionStorage
+        and convert it back into a JavaScript array.
+        */
+
+        const storedProjects =
+            JSON.parse(
+                sessionStorage.getItem(
+                    "portfolioProjects"
+                )
+            );
+
+
+        const projectContainer =
+            document.getElementById(
+                "projectContainer"
+            );
+
+
+        /*
+        Loop through the stored project objects and
+        dynamically create the HTML for each project.
+        */
+
+        storedProjects.forEach(function (project) {
+
+            // Create the main project card.
+
+            const projectCard =
+                document.createElement("article");
+
+            projectCard.classList.add(
+                "project-card"
+            );
+
+
+            // Create the project image.
+
+            const projectImage =
+                document.createElement("img");
+
+            projectImage.src =
+                project.image;
+
+            projectImage.alt =
+                project.title + " project image";
+
+
+            // Create the project title.
+
+            const projectTitle =
+                document.createElement("h3");
+
+            projectTitle.textContent =
+                project.title;
+
+
+            // Create the project summary.
+
+            const projectSummary =
+                document.createElement("p");
+
+            projectSummary.textContent =
+                project.summary;
+
+
+            // Create the repository link.
+
+            const projectLink =
+                document.createElement("a");
+
+            projectLink.href =
+                project.repository;
+
+            projectLink.textContent =
+                "View GitHub Repository";
+
+            projectLink.target =
+                "_blank";
+
+            projectLink.rel =
+                "noopener noreferrer";
+
+
+            // Append all elements to the project card.
+
+            projectCard.appendChild(
+                projectImage
+            );
+
+            projectCard.appendChild(
+                projectTitle
+            );
+
+            projectCard.appendChild(
+                projectSummary
+            );
+
+            projectCard.appendChild(
+                projectLink
+            );
+
+
+            // Append the completed card to the page.
+
+            projectContainer.appendChild(
+                projectCard
+            );
+
+        });
+
+
+        // Select and modify the About heading.
+
+        const aboutHeading =
+            document.querySelector(
+                "#aboutHeading"
+            );
+
+        aboutHeading.textContent =
+            "About Me";
+
+        aboutHeading.style.color =
+            "#0066cc";
+
+
+        // Select and modify the Projects section.
+
+        const projectsSection =
+            document.getElementById(
+                "projects"
+            );
+
+        const projectsHeading =
+            document.getElementById(
+                "projectsHeading"
+            );
+
+        projectsHeading.textContent =
+            "My Programming Projects";
+
+        projectsSection.classList.add(
+            "modified-projects"
+        );
+
+
+        /*
+        Determine which featured resource boxes
+        should be visible.
+        */
+
+        const projectLinks =
+            document.querySelectorAll(
+                "#projects a"
+            );
+
+        const universityResources =
+            document.getElementById(
+                "universityResources"
+            );
+
+        const personalProjects =
+            document.getElementById(
+                "personalProjects"
+            );
+
+
+        if (projectLinks.length < 3) {
+
+            universityResources.style.display =
+                "block";
+
+            personalProjects.style.display =
+                "block";
+
+        } else {
+
+            universityResources.style.display =
                 "none";
 
-        }
-    );
-
-
-    // Store portfolio skills in an array.
-    const skills = [
-        "HTML",
-        "CSS",
-        "JavaScript",
-        "Git",
-        "GitHub"
-    ];
-
-    const skillsList =
-        document.getElementById("skillsList");
-
-
-    // Dynamically create and append each skill as a list item.
-    skills.forEach(function (skill) {
-
-        const listItem =
-            document.createElement("li");
-
-        listItem.textContent = skill;
-
-        skillsList.appendChild(listItem);
-
-    });
-
-
-    // Dynamically create a new paragraph for the Projects section.
-    const projectsSection =
-        document.getElementById("projects");
-
-    const projectIntroduction =
-        document.createElement("p");
-
-    projectIntroduction.textContent =
-        "These projects demonstrate my growing experience with programming, web development, and problem-solving.";
-
-    projectsSection.appendChild(projectIntroduction);
-
-
-    // Dynamically create a notification after a two-second delay.
-    setTimeout(function () {
-
-        const notification =
-            document.createElement("div");
-
-        notification.id = "notificationArea";
-
-        notification.textContent =
-            "Welcome to my updated JavaScript portfolio!";
-
-        document.body.insertBefore(
-            notification,
-            document.body.firstChild
-        );
-
-    }, 2000);
-
-
-    // Select and modify an existing heading using querySelector().
-    const aboutHeading =
-        document.querySelector("#aboutHeading");
-
-    aboutHeading.textContent =
-        "About Me";
-
-    aboutHeading.style.color =
-        "#0066cc";
-
-
-    // Select and modify the existing Projects section.
-    const projectsHeading =
-        document.getElementById("projectsHeading");
-
-    projectsHeading.textContent =
-        "My Programming Projects";
-
-    projectsSection.classList.add(
-        "modified-projects"
-    );
-
-
-    // Determine which featured resource boxes should be visible.
-    const projectLinks =
-        document.querySelectorAll("#projects a");
-
-    const universityResources =
-        document.getElementById("universityResources");
-
-    const personalProjects =
-        document.getElementById("personalProjects");
-
-    if (projectLinks.length < 3) {
-
-        universityResources.style.display =
-            "block";
-
-        personalProjects.style.display =
-            "block";
-
-    } else {
-
-        universityResources.style.display =
-            "none";
-
-        personalProjects.style.display =
-            "block";
-
-    }
-
-
-    // Read the saved dark mode preference when the page loads.
-    const darkModeToggle =
-        document.getElementById("darkModeToggle");
-
-    const savedDarkMode =
-        localStorage.getItem("darkMode");
-
-    if (savedDarkMode === "enabled") {
-
-        document.body.classList.add(
-            "dark-mode"
-        );
-
-        darkModeToggle.checked =
-            true;
-
-    }
-
-
-    // Save the user's dark mode preference whenever the toggle changes.
-    darkModeToggle.addEventListener(
-        "change",
-        function () {
-
-            if (darkModeToggle.checked) {
-
-                document.body.classList.add(
-                    "dark-mode"
-                );
-
-                localStorage.setItem(
-                    "darkMode",
-                    "enabled"
-                );
-
-            } else {
-
-                document.body.classList.remove(
-                    "dark-mode"
-                );
-
-                localStorage.setItem(
-                    "darkMode",
-                    "disabled"
-                );
-
-            }
+            personalProjects.style.display =
+                "block";
 
         }
-    );
 
 
-    // Handle the contact form submission.
-    const contactForm =
-        document.getElementById("contactForm");
+        // Read the saved dark-mode preference.
 
-    const formStatus =
-        document.getElementById("formStatus");
+        const darkModeToggle =
+            document.getElementById(
+                "darkModeToggle"
+            );
 
-    contactForm.addEventListener(
-        "submit",
-        function (event) {
+        const savedDarkMode =
+            localStorage.getItem(
+                "darkMode"
+            );
 
-            // Prevent the browser from submitting and refreshing the page.
-            event.preventDefault();
 
-            let senderName =
-                document.getElementById("senderName").value;
+        if (savedDarkMode === "enabled") {
 
-            if (senderName === "") {
-                senderName = "Guest";
+            document.body.classList.add(
+                "dark-mode"
+            );
+
+            darkModeToggle.checked =
+                true;
+
+        }
+
+
+        // Save the user's dark-mode selection.
+
+        darkModeToggle.addEventListener(
+            "change",
+            function () {
+
+                if (darkModeToggle.checked) {
+
+                    document.body.classList.add(
+                        "dark-mode"
+                    );
+
+                    localStorage.setItem(
+                        "darkMode",
+                        "enabled"
+                    );
+
+                } else {
+
+                    document.body.classList.remove(
+                        "dark-mode"
+                    );
+
+                    localStorage.setItem(
+                        "darkMode",
+                        "disabled"
+                    );
+
+                }
+
             }
+        );
 
-            // Display a temporary sending message.
-            formStatus.textContent =
-                "Sending message...";
 
-            formStatus.className =
-                "sending-message";
+        // Display a notification after two seconds.
 
-            // Replace the sending message after three seconds.
-            setTimeout(function () {
+        setTimeout(function () {
+
+            const notification =
+                document.createElement("div");
+
+            notification.id =
+                "notificationArea";
+
+            notification.textContent =
+                "Welcome to my updated JavaScript portfolio!";
+
+            document.body.insertBefore(
+                notification,
+                document.body.firstChild
+            );
+
+        }, 2000);
+
+
+        // Handle the contact form submission.
+
+        const contactForm =
+            document.getElementById(
+                "contactForm"
+            );
+
+        const formStatus =
+            document.getElementById(
+                "formStatus"
+            );
+
+
+        contactForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+                let senderName =
+                    document.getElementById(
+                        "senderName"
+                    ).value.trim();
+
+
+                if (senderName === "") {
+
+                    senderName =
+                        "Guest";
+
+                }
+
 
                 formStatus.textContent =
-                    "Message sent successfully! Thank you, " +
-                    senderName +
-                    ".";
+                    "Sending message...";
 
                 formStatus.className =
-                    "success-message";
+                    "sending-message";
 
-                contactForm.reset();
 
-            }, 3000);
+                setTimeout(function () {
 
-        }
-    );
+                    formStatus.textContent =
+                        "Message sent successfully! Thank you, " +
+                        senderName +
+                        ".";
 
-</script>
+                    formStatus.className =
+                        "success-message";
+
+                    contactForm.reset();
+
+                }, 3000);
+
+            }
+        );
+
+    </script>
 
 </body>
 
